@@ -7,8 +7,8 @@ Updates a DNS A record with a current public IP address
 
 Example of the config file:
 
-  [client]
-  key = <api-key>
-  zone_name = <gandi-zone-name>
-  domain_name = <domain-name-to-update>
-  ttl = <time-to-live-for-a-dns-record-in-seconds>
+    [client]
+    key = <api-key>
+    zone_name = <gandi-zone-name>
+    domain_name = <domain-name-to-update>
+    ttl = <time-to-live-for-a-dns-record-in-seconds>
