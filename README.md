@@ -1,5 +1,5 @@
-# For domains that use GANDI.net DNS
-# Updates a DNS A record with a current public IP address
+For domains that use GANDI.net DNS
+Updates a DNS A record with a current public IP address
 
 - uses gandi API to get zone information
 - uses icanhazip.com to get a current public IP address
