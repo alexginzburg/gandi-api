@@ -3,10 +3,16 @@
 import xmlrpclib
 import urllib2
 import sys
+import ConfigParser
 
-zone_name = 'eightbits'
+config = ConfigParser.ConfigParser()
+config.read('/etc/gandi-api-key')
+api_key = config.get('client', 'key')
+zone_name =  config.get('client', 'zone_name')
+domain_name = config.get('client', 'domain_name')
+ttl = config.getint('client', 'ttl')
+
 api = xmlrpclib.ServerProxy('https://rpc.gandi.net/xmlrpc/')
-api_key = 'XXXXX'
 api_version = api.version.info(api_key)
 
 ip_address = urllib2.urlopen('http://icanhazip.com').read()
@@ -25,14 +31,14 @@ print >> sys.stderr, api.domain.zone.record.delete(
         api_key,
         zone_id,
         zone_version,
-        { "type": "A", "name": "snowcrash" }
+        { "type": "A", "name": domain_name }
 )
 
 print >> sys.stderr, api.domain.zone.record.add(
         api_key,
         zone_id,
         zone_version,
-        { "type": "A", "name": "snowcrash", "ttl": 300, "value": ip_address }
+        { "type": "A", "name": domain_name, "ttl": ttl, "value": ip_address }
 )
 
 print >> sys.stderr, api.domain.zone.version.set(
