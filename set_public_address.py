@@ -36,7 +36,6 @@ def _get_current_address():
     '''
         gandi api to update an ip address
     '''
-
     return urllib2.urlopen('http://icanhazip.com').read()
 
 def _get_zone_for_name(api, api_key, zone_name):
@@ -89,5 +88,14 @@ def _update_domain(api_key, zone_name, domain_list, ttl):
                 )
         )
 
-if __name__ == 'main':
-    main()
+    print >> sys.stderr, "active version %s with result = %s" % (
+            zone_version,
+            api.domain.zone.version.set(
+                api_key,
+                zone_id,
+                zone_version
+            )
+    )
+
+if __name__ == '__main__':
+    sys.exit(main())
