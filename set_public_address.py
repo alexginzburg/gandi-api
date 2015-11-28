@@ -43,11 +43,12 @@ def _get_zone_for_name(api, api_key, zone_name):
         gandi api to update an ip address
     '''
 
-    zone_id = [
-                z['id'] for z in api.domain.zone.list(api_key)
-                if z['name'] == zone_name
+    zone = [
+        z['id']
+        for z in api.domain.zone.list(api_key)
+            if z['name'] == zone_name
     ]
-    return zone_id.pop()
+    return zone.pop()
 
 def _update_domain(api_key, zone_name, domain_list, ttl):
     '''
@@ -57,6 +58,15 @@ def _update_domain(api_key, zone_name, domain_list, ttl):
     api = _create_api_client(api_key)
     zone_id = _get_zone_for_name(api, api_key, zone_name)
     ip_address = _get_current_address()
+    needs_update = []
+    for record in api.domain.zone.record.list(api_key, zone_id, 0):
+        if record['name'] in domain_list:
+            if record['value'] == ip_address:
+                needs_update = record['name']
+
+    if not needs_update:
+        print >> sys.stderr, "no need to update. ip=%s" % ip_address
+        return
 
     zone_version = api.domain.zone.version.new(api_key, zone_id)
 
