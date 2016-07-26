@@ -61,7 +61,7 @@ def _update_domain(api_key, zone_name, domain_list, ttl):
     needs_update = []
     for record in api.domain.zone.record.list(api_key, zone_id, 0):
         if record['name'] in domain_list:
-            if record['value'] != ip_address:
+            if not record['value'] == ip_address.strip():
                 needs_update = record['name']
 
     if not needs_update:
